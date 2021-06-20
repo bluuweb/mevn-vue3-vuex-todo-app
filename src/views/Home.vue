@@ -1,18 +1,46 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div class="my-3" v-if="errors">
+		<div
+			class="alert alert-danger"
+			v-for="(error, index) in errors"
+			:key="index"
+		>
+			{{ error.msg }} 🤦‍♂️
+		</div>
+	</div>
+	<AddTodo />
+	<div class="my-2">
+		<h4>TODOS: {{ user.name }}</h4>
+		<Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
+	</div>
+	<pre>
+        user: {{ user }}
+    </pre>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
+
+import AddTodo from "../components/AddTodo.vue";
+import Todo from "../components/Todo.vue";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+	components: { AddTodo, Todo },
+	setup() {
+		const store = useStore();
+
+		const user = computed(() => store.state.moduleAuth.user);
+		const todos = computed(() => store.state.moduleTodo.todos);
+		const errors = computed(() => store.state.moduleTodo.errors);
+
+		onMounted(() => store.dispatch("moduleTodo/getTodos"));
+
+		return {
+			user,
+			todos,
+			errors,
+		};
+	},
+};
 </script>
