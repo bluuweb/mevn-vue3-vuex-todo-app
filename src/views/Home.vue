@@ -9,7 +9,7 @@
 		</div>
 	</div>
 	<AddTodo />
-	<div class="my-2">
+	<div class="my-2" v-if="user">
 		<h4>TODOS: {{ user.name }}</h4>
 		<Todo v-for="todo in todos" :key="todo._id" :todo="todo" />
 	</div>

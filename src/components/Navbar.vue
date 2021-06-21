@@ -26,6 +26,7 @@ export default {
 		const user = computed(() => store.state.moduleAuth.user);
 		const logout = () => {
 			store.dispatch("moduleAuth/cerrarSesion");
+			store.commit("moduleTodo/setTodos", null);
 		};
 		return {
 			logout,
